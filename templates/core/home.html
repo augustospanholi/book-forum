@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Folio — Book Forum</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #0a090c;
+    --surface:   #100f13;
+    --surface2:  #161419;
+    --surface3:  #1d1a22;
+    --accent:    #51007A;
+    --accent-dim:#3a0058;
+    --accent-glow: rgba(81,0,122,0.25);
+    --accent-lite: #8b2fc9;
+    --border:    rgba(255,255,255,0.06);
+    --border2:   rgba(255,255,255,0.1);
+    --text:      #e8e4ee;
+    --muted:     #7a7185;
+    --muted2:    #9d96a8;
+    --tag-bg:    rgba(81,0,122,0.18);
+    --tag-text:  #c080f0;
+    --font-head: 'Cormorant Garamond', serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 15px; line-height: 1.6; }
+  a { color: inherit; text-decoration: none; }
+
+  /* HEADER */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,9,12,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .accent-bar {
+    height: 2px;
+    background: linear-gradient(to right, var(--accent), transparent);
+  }
+
+  .header-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+  }
+
+  .logo {
+    font-family: var(--font-head);
+    font-size: 1.55rem;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .logo-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent-lite);
+    display: inline-block;
+    margin-bottom: 2px;
+  }
+
+  nav { display: flex; align-items: center; gap: 0.15rem; flex: 1; }
+  nav a {
+    font-size: 13px;
+    color: var(--muted);
+    padding: 6px 14px;
+    border-radius: 6px;
+    transition: color 0.18s, background 0.18s;
+  }
+  nav a:hover { color: var(--text); background: var(--surface3); }
+  nav a.active { color: var(--text); }
+
+  .header-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+
+  .btn-ghost {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--muted2);
+    background: transparent;
+    border: 1px solid var(--border2);
+    padding: 6px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color 0.18s, border-color 0.18s;
+  }
+  .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+  .btn-accent {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+    background: var(--accent);
+    border: none;
+    padding: 6px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.18s, box-shadow 0.18s;
+  }
+  .btn-accent:hover { background: #6800a0; box-shadow: 0 0 16px var(--accent-glow); }
+
+  /* MAIN LAYOUT */
+  .main {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  /* PAGE INTRO */
+  .page-intro {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 1.5rem;
+  }
+  .page-intro h1 {
+    font-family: var(--font-head);
+    font-size: 1.9rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .page-intro p { font-size: 13px; color: var(--muted); }
+
+  /* CATEGORY GROUP */
+  .cat-group { margin-bottom: 1.5rem; }
+
+  .cat-group-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cat-group-label::before {
+    content: '';
+    display: block;
+    width: 10px; height: 2px;
+    background: var(--accent-lite);
+    border-radius: 2px;
+  }
+
+  .cat-table {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .cat-row {
+    display: grid;
+    grid-template-columns: 2fr 140px 1fr;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s;
+    text-decoration: none;
+    color: inherit;
+  }
+  .cat-row:last-child { border-bottom: none; }
+  .cat-row:hover { background: var(--surface3); }
+
+  .cat-left { display: flex; align-items: center; gap: 12px; }
+
+  .cat-icon {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    background: var(--tag-bg);
+    border: 1px solid rgba(140,47,201,0.18);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .cat-icon svg { width: 15px; height: 15px; fill: var(--accent-lite); }
+
+  .cat-name { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+  .cat-desc { font-size: 12px; color: var(--muted); }
+
+  .cat-stats { display: flex; gap: 1.5rem; align-items: center; }
+  .cat-stat { text-align: center; }
+  .cat-stat-num { font-size: 13px; font-weight: 500; color: var(--muted2); }
+  .cat-stat-label { font-size: 11px; color: var(--muted); }
+
+  .cat-latest { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .cat-latest-title {
+    font-size: 13px; color: var(--text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .cat-latest-meta { font-size: 11px; color: var(--muted); }
+
+  /* RIGHT SIDEBAR */
+  .right-sidebar { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .widget {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .widget-header {
+    padding: 0.85rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .widget-body { padding: 0.5rem 0; }
+
+  .widget-row {
+    display: flex;
+    align-items: center;
+    padding: 8px 1.25rem;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.15s;
+    gap: 8px;
+  }
+  .widget-row:hover { background: var(--surface3); }
+
+  .online-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #4eca82;
+    flex-shrink: 0;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+  .stat-cell {
+    background: var(--surface);
+    padding: 1rem 1.25rem;
+    text-align: center;
+  }
+  .stat-cell-num {
+    font-family: var(--font-head);
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-cell-label { font-size: 11px; color: var(--muted); }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  footer a { color: var(--muted); transition: color 0.15s; }
+  footer a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="accent-bar"></div>
+  <div class="header-inner">
+    <a href="#" class="logo">
+      <span class="logo-dot"></span>
+      Folio
+    </a>
+    <nav>
+      <a href="#" class="active">Forums</a>
+      <a href="#">What's New</a>
+      <a href="{% url 'our_history' %}">Our History</a>
+    </nav>
+    <div class="header-right">
+      <button class="btn-ghost">Log in</button>
+      <button class="btn-accent">Register</button>
+    </div>
+  </div>
+</header>
+
+<div class="page-intro">
+  <h1>Forums</h1>
+  <p>Find a section below and join the conversation.</p>
+</div>
+
+<div class="main">
+  <div>
+
+    <!-- INFORMATION -->
+    <div class="cat-group">
+      <div class="cat-group-label">Information</div>
+      <div class="cat-table">
+        <a href="#" class="cat-row">
+          <div class="cat-left">
+            <div class="cat-icon">
+              <svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm.75 10.5h-1.5v-4.5h1.5v4.5zm0-6h-1.5v-1.5h1.5v1.5z"/></svg>
+            </div>
+            <div>
+              <div class="cat-name">Rules</div>
+              <div class="cat-desc">Community guidelines — read before posting.</div>
+            </div>
+          </div>
+          <div class="cat-stats">
+            <div class="cat-stat">
+              <div class="cat-stat-num">1</div>
+              <div class="cat-stat-label">Threads</div>
+            </div>
+            <div class="cat-stat">
+              <div class="cat-stat-num">1</div>
+              <div class="cat-stat-label">Messages</div>
+            </div>
+          </div>
+          <div class="cat-latest">
+            <div class="cat-latest-title">Community Guidelines (read me)</div>
+            <div class="cat-latest-meta">Mar 18, 2026 · admin</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- COMMUNITY -->
+    <div class="cat-group">
+      <div class="cat-group-label">Community</div>
+      <div class="cat-table">
+
+        <a href="#" class="cat-row">
+          <div class="cat-left">
+            <div class="cat-icon">
+              <svg viewBox="0 0 16 16"><path d="M14 1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h2v3l3-3h7a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/></svg>
+            </div>
+            <div>
+              <div class="cat-name">General Discussion</div>
+              <div class="cat-desc">Books, authors, recommendations, and anything reading-related.</div>
+            </div>
+          </div>
+          <div class="cat-stats">
+            <div class="cat-stat">
+              <div class="cat-stat-num">1.2K</div>
+              <div class="cat-stat-label">Threads</div>
+            </div>
+            <div class="cat-stat">
+              <div class="cat-stat-num">26.2K</div>
+              <div class="cat-stat-label">Messages</div>
+            </div>
+          </div>
+          <div class="cat-latest">
+            <div class="cat-latest-title">What are you reading? April 2026</div>
+            <div class="cat-latest-meta">Today at 10:22 AM · raizy</div>
+          </div>
+        </a>
+
+        <a href="#" class="cat-row">
+          <div class="cat-left">
+            <div class="cat-icon">
+              <svg viewBox="0 0 16 16"><path d="M8 1l1.9 3.8 4.1.6-3 2.9.7 4.1L8 10.4l-3.7 2 .7-4.1-3-2.9 4.1-.6z"/></svg>
+            </div>
+            <div>
+              <div class="cat-name">Reviews</div>
+              <div class="cat-desc">Detailed critiques, ratings, and impressions.</div>
+            </div>
+          </div>
+          <div class="cat-stats">
+            <div class="cat-stat">
+              <div class="cat-stat-num">488</div>
+              <div class="cat-stat-label">Threads</div>
+            </div>
+            <div class="cat-stat">
+              <div class="cat-stat-num">9.5K</div>
+              <div class="cat-stat-label">Messages</div>
+            </div>
+          </div>
+          <div class="cat-latest">
+            <div class="cat-latest-title">The Women — Kristin Hannah [9/10]</div>
+            <div class="cat-latest-meta">Today at 8:04 AM · veiller</div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT SIDEBAR -->
+  <div class="right-sidebar">
+
+    <div class="widget">
+      <div class="widget-header">Forum Stats</div>
+      <div class="stat-grid">
+        <div class="stat-cell">
+          <div class="stat-cell-num">6.7K</div>
+          <div class="stat-cell-label">Threads</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-num">78K</div>
+          <div class="stat-cell-label">Messages</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-num">17K</div>
+          <div class="stat-cell-label">Members</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-cell-num">21</div>
+          <div class="stat-cell-label">Online now</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="widget">
+      <div class="widget-header">Members Online</div>
+      <div class="widget-body">
+        <div class="widget-row"><div class="online-dot"></div>veiller</div>
+        <div class="widget-row"><div class="online-dot"></div>Bonsik</div>
+        <div class="widget-row"><div class="online-dot"></div>raizy</div>
+        <div class="widget-row"><div class="online-dot"></div>Mgu</div>
+        <div class="widget-row" style="color:var(--muted); font-size:12px;">+ 17 guests</div>
+      </div>
+    </div>
+
+    <div class="widget">
+      <div class="widget-header">Latest Activity</div>
+      <div class="widget-body">
+        <div class="widget-row" style="flex-direction:column;align-items:flex-start;gap:1px;">
+          <span style="font-size:13px;color:var(--text)">The Women — Kristin Hannah</span>
+          <span style="font-size:11px;color:var(--muted)">2 min ago · veiller</span>
+        </div>
+        <div class="widget-row" style="flex-direction:column;align-items:flex-start;gap:1px;">
+          <span style="font-size:13px;color:var(--text)">What are you reading? April</span>
+          <span style="font-size:11px;color:var(--muted)">15 min ago · Ali</span>
+        </div>
+        <div class="widget-row" style="flex-direction:column;align-items:flex-start;gap:1px;">
+          <span style="font-size:13px;color:var(--text)">Books that changed you</span>
+          <span style="font-size:11px;color:var(--muted)">1 hr ago · Bonsik</span>
+        </div>
+        <div class="widget-row" style="flex-direction:column;align-items:flex-start;gap:1px;">
+          <span style="font-size:13px;color:var(--text)">Is McCarthy still unmatched?</span>
+          <span style="font-size:11px;color:var(--muted)">3 hr ago · Mgu</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 Folio — all rights reserved</span>
+  <div style="display:flex;gap:1.5rem;">
+    <a href="#">Terms</a>
+    <a href="#">Privacy</a>
+    <a href="{% url 'contact' %}">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>
