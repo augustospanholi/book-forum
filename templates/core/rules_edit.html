@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Rules — Folio{% endblock %}
+
+{% block extra_css %}
+  .form-container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+  }
+
+  .form-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem 2.25rem;
+  }
+
+  .field-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted2);
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .field-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 7px;
+    padding: 9px 14px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    resize: vertical;
+    margin-bottom: 1.5rem;
+  }
+  .field-input:focus {
+    border-color: var(--accent-lite);
+    box-shadow: 0 0 0 3px rgba(139,47,201,0.15);
+  }
+
+  .auth-submit {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+    background: var(--accent);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background 0.18s, box-shadow 0.18s;
+  }
+  .auth-submit:hover { background: #6800a0; box-shadow: 0 0 16px var(--accent-glow); }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1.25rem;
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--text); }
+{% endblock %}
+
+{% block content %}
+<div class="page-intro">
+  <h1>Edit Rules</h1>
+  <p>Only admins can edit this page.</p>
+</div>
+
+<div class="form-container">
+  <a href="{% url 'rules' %}" class="back-link">← Back to Rules</a>
+
+  <div class="form-card">
+    <form method="POST" action="{% url 'rules_edit' %}">
+      {% csrf_token %}
+      {% for field in form.visible_fields %}
+      <label class="field-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+      {{ field }}
+      {% endfor %}
+      <button type="submit" class="auth-submit">Save Rules</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,219 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Folio{% endblock %}</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #0a090c;
+    --surface:   #100f13;
+    --surface2:  #161419;
+    --surface3:  #1d1a22;
+    --accent:    #51007A;
+    --accent-dim:#3a0058;
+    --accent-glow: rgba(81,0,122,0.25);
+    --accent-lite: #8b2fc9;
+    --border:    rgba(255,255,255,0.06);
+    --border2:   rgba(255,255,255,0.1);
+    --text:      #e8e4ee;
+    --muted:     #7a7185;
+    --muted2:    #9d96a8;
+    --tag-bg:    rgba(81,0,122,0.18);
+    --tag-text:  #c080f0;
+    --font-head: 'Cormorant Garamond', serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 15px; line-height: 1.6; }
+  a { color: inherit; text-decoration: none; }
+
+  /* HEADER */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,9,12,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .accent-bar {
+    height: 2px;
+    background: linear-gradient(to right, var(--accent), transparent);
+  }
+
+  .header-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+  }
+
+  .logo {
+    font-family: var(--font-head);
+    font-size: 1.55rem;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .logo-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent-lite);
+    display: inline-block;
+    margin-bottom: 2px;
+  }
+
+  nav { display: flex; align-items: center; gap: 0.15rem; flex: 1; }
+  nav a {
+    font-size: 13px;
+    color: var(--muted);
+    padding: 6px 14px;
+    border-radius: 6px;
+    transition: color 0.18s, background 0.18s;
+  }
+  nav a:hover { color: var(--text); background: var(--surface3); }
+  nav a.active { color: var(--text); }
+
+  .header-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+
+  .btn-ghost {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--muted2);
+    background: transparent;
+    border: 1px solid var(--border2);
+    padding: 6px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color 0.18s, border-color 0.18s;
+  }
+  .btn-ghost:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+  .btn-accent {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+    background: var(--accent);
+    border: none;
+    padding: 6px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.18s, box-shadow 0.18s;
+  }
+  .btn-accent:hover { background: #6800a0; box-shadow: 0 0 16px var(--accent-glow); }
+
+  /* PAGE INTRO */
+  .page-intro {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 1.5rem;
+  }
+  .page-intro h1 {
+    font-family: var(--font-head);
+    font-size: 1.9rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .page-intro p { font-size: 13px; color: var(--muted); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  footer a { color: var(--muted); transition: color 0.15s; }
+  footer a:hover { color: var(--text); }
+
+  .messages-container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0.75rem 2rem 0;
+  }
+  .message {
+    padding: 10px 16px;
+    border-radius: 7px;
+    font-size: 13px;
+    margin-bottom: 0.5rem;
+  }
+  .message-success {
+    background: rgba(34,197,94,0.12);
+    border: 1px solid rgba(34,197,94,0.3);
+    color: #86efac;
+  }
+  .message-error {
+    background: rgba(239,68,68,0.12);
+    border: 1px solid rgba(239,68,68,0.3);
+    color: #fca5a5;
+  }
+
+  {% block extra_css %}{% endblock %}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="accent-bar"></div>
+  <div class="header-inner">
+    <a href="{% url 'home' %}" class="logo">
+      <span class="logo-dot"></span>
+      Folio
+    </a>
+    <nav>
+      <a href="{% url 'home' %}" {% if request.resolver_match.url_name == 'home' %}class="active"{% endif %}>Forums</a>
+      <a href="#">What's New</a>
+      <a href="{% url 'our_history' %}" {% if request.resolver_match.url_name == 'our_history' %}class="active"{% endif %}>Our History</a>
+      <a href="{% url 'rules' %}" {% if request.resolver_match.url_name == 'rules' or request.resolver_match.url_name == 'rules_edit' %}class="active"{% endif %}>Rules</a>
+    </nav>
+    <div class="header-right">
+      {% if user.is_authenticated %}
+      <a href="{% url 'profile' user.username %}" style="font-size:13px; color:var(--muted2); text-decoration:none;">{{ user.username }}</a>
+      <a href="{% url 'logout' %}" class="btn-ghost">Logout</a>
+      {% else %}
+      <a href="{% url 'login' %}" class="btn-ghost">Log in</a>
+      <a href="{% url 'register' %}" class="btn-accent">Register</a>
+      {% endif %}
+    </div>
+  </div>
+</header>
+
+{% if messages %}
+<div class="messages-container">
+  {% for message in messages %}
+  <div class="message message-{{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% block content %}{% endblock %}
+
+<footer>
+  <span>© 2026 Folio — all rights reserved</span>
+  <div style="display:flex;gap:1.5rem;">
+    <a href="#">Terms</a>
+    <a href="#">Privacy</a>
+    <a href="{% url 'contact' %}">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>

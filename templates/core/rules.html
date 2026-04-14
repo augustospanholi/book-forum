@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Rules — Folio{% endblock %}
+
+{% block extra_css %}
+  .rules-container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+  }
+
+  .rules-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .rules-header {
+    padding: 1.25rem 1.75rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .rules-header h2 {
+    font-family: var(--font-head);
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--text);
+  }
+
+  .btn-edit {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent-lite);
+    background: var(--tag-bg);
+    border: 1px solid rgba(140,47,201,0.25);
+    padding: 5px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.18s;
+  }
+  .btn-edit:hover { background: rgba(81,0,122,0.3); }
+
+  .rules-body {
+    padding: 1.5rem 1.75rem;
+    font-size: 14px;
+    color: var(--muted2);
+    line-height: 1.8;
+    white-space: pre-wrap;
+  }
+
+  .rules-empty {
+    padding: 2.5rem 1.75rem;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .rules-updated {
+    padding: 0.75rem 1.75rem;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted);
+  }
+{% endblock %}
+
+{% block content %}
+<div class="page-intro">
+  <h1>Rules</h1>
+  <p>Community guidelines — please read before posting.</p>
+</div>
+
+<div class="rules-container">
+  <div class="rules-card">
+    <div class="rules-header">
+      <h2>Community Guidelines</h2>
+      {% if user.is_staff %}
+      <a href="{% url 'rules_edit' %}" class="btn-edit">Edit Rules</a>
+      {% endif %}
+    </div>
+
+    {% if rules %}
+    <div class="rules-body">{{ rules.content }}</div>
+    <div class="rules-updated">Last updated: {{ rules.updated_at|date:"M d, Y \a\t g:i A" }}</div>
+    {% else %}
+    <div class="rules-empty">No rules have been set yet.</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

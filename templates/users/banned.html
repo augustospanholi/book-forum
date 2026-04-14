@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account Banned — Folio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a090c; --surface: #100f13; --surface2: #161419;
+    --border: rgba(255,255,255,0.06); --border2: rgba(255,255,255,0.1);
+    --text: #e8e4ee; --muted: #7a7185; --muted2: #9d96a8;
+    --font-head: 'Cormorant Garamond', serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+  }
+  .container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+  .icon {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 1.75rem;
+  }
+  h1 {
+    font-family: var(--font-head);
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 0.6rem;
+  }
+  .subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+  .username {
+    font-size: 13px;
+    color: #fca5a5;
+    margin-bottom: 2rem;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid rgba(239,68,68,0.2);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    max-width: 420px;
+    margin: 0 auto 2rem;
+    font-size: 13px;
+    color: var(--muted2);
+    line-height: 1.7;
+    text-align: left;
+  }
+  .btn-logout {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted2);
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    padding: 10px 24px;
+    border-radius: 7px;
+    text-decoration: none;
+    transition: border-color 0.18s, color 0.18s;
+    display: inline-block;
+  }
+  .btn-logout:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">🚫</div>
+    <h1>Account Banned</h1>
+    <p class="subtitle">Your account has been suspended.</p>
+    <p class="username">{{ user.username }}</p>
+    <div class="card">
+      Your account has been banned by an administrator and you no longer have access to Folio.
+      If you believe this was a mistake, please contact the moderation team.
+    </div>
+    <a href="{% url 'logout' %}" class="btn-logout">Log out</a>
+  </div>
+</body>
+</html>

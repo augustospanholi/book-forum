@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Reply — Folio{% endblock %}
+
+{% block extra_css %}
+  .confirm-container {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+  }
+  .confirm-card {
+    background: var(--surface);
+    border: 1px solid rgba(239,68,68,0.25);
+    border-radius: 12px;
+    padding: 2rem 2.25rem;
+    text-align: center;
+  }
+  .confirm-title {
+    font-family: var(--font-head);
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .confirm-desc { font-size: 13px; color: var(--muted); margin-bottom: 1.75rem; }
+  .confirm-content {
+    font-size: 13px;
+    color: var(--muted2);
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 7px;
+    padding: 10px 16px;
+    margin-bottom: 1.75rem;
+    text-align: left;
+    white-space: pre-wrap;
+  }
+  .confirm-actions { display: flex; gap: 10px; }
+  .btn-confirm-delete {
+    flex: 1;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+    background: rgba(239,68,68,0.8);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: background 0.18s;
+  }
+  .btn-confirm-delete:hover { background: rgb(220,38,38); }
+  .btn-cancel {
+    flex: 1;
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--muted2);
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    padding: 10px 18px;
+    border-radius: 7px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-cancel:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+{% endblock %}
+
+{% block content %}
+<div class="page-intro">
+  <h1>Delete Reply</h1>
+</div>
+<div class="confirm-container">
+  <div class="confirm-card">
+    <div class="confirm-title">Are you sure?</div>
+    <div class="confirm-desc">This reply will be permanently deleted.</div>
+    <div class="confirm-content">{{ reply.content }}</div>
+    <form method="POST" action="{% url 'reply_delete' reply.id %}">
+      {% csrf_token %}
+      <div class="confirm-actions">
+        <a href="{% url 'post_detail' reply.post.id %}" class="btn-cancel">Cancel</a>
+        <button type="submit" class="btn-confirm-delete">Yes, delete</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
